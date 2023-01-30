@@ -1,15 +1,13 @@
-// import { createYoga } from 'graphql-yoga'
 import express, { Application } from 'express'
-import "reflect-metadata";
-// import { buildTypeDefsAndResolvers} from 'type-graphql'
-import {config} from 'dotenv'
-// import { makeExecutableSchema } from "@graphql-tools/schema";
 import cors from 'cors'
 import helmet from 'helmet';
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
 
-config()
+import { database } from './core/dbConnection';
+import {config} from '@core/config'
+import logger from './core/logger';
+
 
 class App {
 	public app: Application
@@ -17,8 +15,9 @@ class App {
         
 		this.app = express()
 		this.middlewares()
-		// this.databaseConnection()
-		this.routes()
+		this.databaseConnection()
+		// this.routes()
+		// Graphql Yoga has it's own error handler so no need for this
 		// this.errorHandling()
 	}
 	private middlewares() {
@@ -39,63 +38,40 @@ class App {
 			})
 		)
 	}
-	public async routes() {
+	// public async routes() {
         // this.app.use('/api/v1')
-		// const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-        //     resolvers: [__dirname + "/**/*.resolver.ts"],
-        // });
-        
-        // const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-        // const yoga = createYoga({schema})
-
-        // this.app.use('/graphql',yoga)
-	}
-	// private databaseConnection() {
-	// 	const connection = new database(config.DB.url, config.DB.options)
-	// 	const db = connection.connect()
-	// 	db.on('connected', () => {
-	// 		// logger.info('Mongoose connection open to master DB')
-	// 	})
-
-	// 	// If the connection throws an error
-	// 	db.on('error', (err) => {
-	// 		// logger.debug(`Mongoose connection error for master DB: ${err}`)
-	// 	})
-
-	// 	// When the connection is disconnected
-	// 	db.on('disconnected', () => {
-	// 		// logger.debug('Mongoose connection disconnected for master DB')
-	// 	})
-
-	// 	// When connection is reconnected
-	// 	db.on('reconnected', () => {
-	// 		// logger.info('Mongoose connection reconnected for master DB')
-	// 	})
-
-	// 	// If the Node process ends, close the Mongoose connection
-	// 	process.on('SIGINT', () => {
-	// 		db.close(() => {
-	// 			logger.debug('Mongoose connection disconnected for master DB through app termination')
-	// 			// eslint-disable-next-line no-process-exit
-	// 			process.exit(0)
-	// 		})
-	// 	})
 	// }
-	/* private errorHandling() {
-		this.app.get('/', (_req: Request, res: Response) => {
-			res.status(200).send('Welcome')
+	private databaseConnection() {
+		const connection = new database(config.DB.url, config.DB.options)
+		const db = connection.connect()
+		db.on('connected', () => {
+			logger.info('Mongoose connection open to master DB')
 		})
 
-		this.app.all('*', (_req: Request, _res: Response, next: NextFunction) => {
-			const err = createError(404, '404 Not Found')
-			return next(err)
+		// If the connection throws an error
+		db.on('error', (err) => {
+			logger.debug(`Mongoose connection error for master DB: ${err}`)
 		})
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		this.app.use((err: HttpError, _req: Request, res: Response, _next: NextFunction) => {
-			res.status(err.status).send(err.message)
+
+		// When the connection is disconnected
+		db.on('disconnected', () => {
+			logger.debug('Mongoose connection disconnected for master DB')
 		})
-	} */
+
+		// When connection is reconnected
+		db.on('reconnected', () => {
+			logger.info('Mongoose connection reconnected for master DB')
+		})
+
+		// If the Node process ends, close the Mongoose connection
+		process.on('SIGINT', () => {
+			db.close(() => {
+				logger.debug('Mongoose connection disconnected for master DB through app termination')
+
+				process.exit(0)
+			})
+		})
+	}
 	createServer() {
 		// const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
         //     resolvers: [__dirname + "/**/*.resolver.ts"],
