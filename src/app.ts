@@ -4,9 +4,9 @@ import helmet from 'helmet';
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
 
-import { database } from './core/dbConnection';
+import { database } from '@core/dbConnection';
 import {config} from '@core/config'
-import logger from './core/logger';
+import logger from '@core/logger';
 
 
 class App {

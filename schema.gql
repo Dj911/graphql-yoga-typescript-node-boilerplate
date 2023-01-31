@@ -3,32 +3,51 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-"""
-The javascript `Date` as string. Type represents date and time as the ISO Date string.
-"""
-scalar DateTime
-
 type Mutation {
-  addRecipe(newRecipeData: NewUserInput!): User!
-}
-
-input NewUserInput {
-  age: Float
-  isActive: Boolean
-  lastLogin: DateTime!
-  mobileNumber: Float!
-  name: String!
+  addRecipe(newRecipeData: UserProfileUpdate!): User!
+  registerUser(payload: UserRegisterInput!): RegisterUser!
 }
 
 type Query {
-  recipe(id: String!): User!
+  getUserById(id: String!): UserRegisterResponse!
 }
 
+type RegisterUser {
+  data: User!
+  message: String!
+}
+
+"""
+The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
 type User {
-  age: Float!
-  id: ID!
-  isActive: Boolean!
-  lastLogin: DateTime!
+  _id: ID!
+  age: Float
+  isActive: Boolean
+  lastLogin: Timestamp
+  mobileNumber: Float
+  name: String
+  password: String!
+  userName: String!
+}
+
+input UserProfileUpdate {
+  age: Float
+  isActive: Boolean
+  lastLogin: Timestamp!
   mobileNumber: Float!
   name: String!
+}
+
+input UserRegisterInput {
+  password: String!
+  userName: String!
+}
+
+"""User Response"""
+type UserRegisterResponse {
+  data: User!
+  message: String!
 }
