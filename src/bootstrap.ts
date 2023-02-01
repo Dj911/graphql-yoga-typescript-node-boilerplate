@@ -6,15 +6,12 @@ import { Container } from 'typedi'
 import { UserModel } from '@user/model'
 import { ErrorInterceptor } from '@middlewares/ErrorInterceptor'
 import { PostModel } from '@post/model'
-// import { FileScalar } from './my-scalars/fileUpload'
-// import { GraphQLUpload, FileUpload } from 'graphql-upload-ts'
 
 async function bootstrap(app) {
 	Container.set([
 		{ id: 'User', factory: () => UserModel },
 		{ id: 'Post', factory: () => PostModel }
 	])
-	// Container.set({ id: "Post", factory: () => PostModel });
 
 	const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
 		emitSchemaFile: true,
@@ -22,8 +19,6 @@ async function bootstrap(app) {
 		globalMiddlewares: [ErrorInterceptor],
 		validate: false,
 		dateScalarMode: 'timestamp',
-		//? Scalar File Types for uploading files in GraphQl
-		// scalarsMap: [{ type: Upload, scalar: GraphQLUpload }],
 		container: Container
 	})
 
