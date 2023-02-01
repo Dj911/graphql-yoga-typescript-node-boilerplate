@@ -1,38 +1,33 @@
-import { ObjectId } from "mongoose";
-import { Field, ID, ObjectType } from "type-graphql";
+import { ObjectId } from 'mongoose'
+import { Field, ID, ObjectType } from 'type-graphql'
 
 @ObjectType()
 export class User {
-    @Field(() => ID)
-    _id: ObjectId;
+	@Field(() => ID)
+	_id: ObjectId
 
-    @Field({nullable: true})
-    name?: string;
+	@Field({ nullable: true })
+	name?: string
 
-    @Field()
-    userName: string
+	@Field()
+	userName: string
 
-    @Field()
-    password: string
+	@Field()
+	password: string
 
-    @Field({nullable: true})
-    mobileNumber?: number;
+	@Field({ nullable: true })
+	mobileNumber?: number
 
-    @Field({nullable: true})
-    age?: number;
+	@Field({ nullable: true })
+	age?: number
 
-    @Field({nullable: true})
-    isActive?: boolean;
+	@Field({ nullable: true })
+	isActive?: boolean
 
-    @Field({nullable: true})
-    lastLogin?: Date;
-}
+	@Field({ nullable: true })
+	lastLogin?: Date
 
-@ObjectType()
-export class RegisterUser {
-    @Field()
-    message: string
-
-    @Field(() => User)
-    data: User
+	//TODO: Use Custom Scalar File type
+	/* @Field(() => File)
+	profile: File */
 }

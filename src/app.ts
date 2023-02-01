@@ -1,32 +1,26 @@
 import express, { Application } from 'express'
 import cors from 'cors'
-import helmet from 'helmet';
+import helmet from 'helmet'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
 
-import { database } from '@core/dbConnection';
-import {config} from '@core/config'
-import logger from '@core/logger';
-
+import { database } from '@core/dbConnection'
+import { config } from '@core/config'
+import logger from '@core/logger'
 
 class App {
 	public app: Application
 	constructor() {
-        
 		this.app = express()
 		this.middlewares()
 		this.databaseConnection()
-		// this.routes()
-		// Graphql Yoga has it's own error handler so no need for this
-		// this.errorHandling()
 	}
 	private middlewares() {
 		this.app.use(cors())
 		this.app.use(helmet())
 		this.app.use(express.json())
 		this.app.use(express.urlencoded({ extended: false }))
-		// this.app.use(cookieParser())
-		// this.app.use(status())
+		// this.app.use(status())	// Server Status using express-status-monitor
 		if (process.env.ENVIRONMENT === 'development') {
 			this.app.use(morgan('dev'))
 		}
@@ -38,9 +32,6 @@ class App {
 			})
 		)
 	}
-	// public async routes() {
-        // this.app.use('/api/v1')
-	// }
 	private databaseConnection() {
 		const connection = new database(config.DB.url, config.DB.options)
 		const db = connection.connect()
@@ -73,15 +64,6 @@ class App {
 		})
 	}
 	createServer() {
-		// const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-        //     resolvers: [__dirname + "/**/*.resolver.ts"],
-        // });
-        
-        // const schema = makeExecutableSchema({ typeDefs, resolvers });
-
-        // const yoga = createYoga({schema})
-
-        // this.app.use('/graphql',yoga)
 		this.app.set('port', process.env.PORT ? process.env.PORT : '3000')
 		return {
 			app: this.app,

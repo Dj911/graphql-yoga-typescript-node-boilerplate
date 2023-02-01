@@ -3,18 +3,36 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input CreatePostInput {
+  author: ID!
+  title: String!
+}
+
 type Mutation {
-  addRecipe(newRecipeData: UserProfileUpdate!): User!
-  registerUser(payload: UserRegisterInput!): RegisterUser!
+  createPost(payload: CreatePostInput!): PostPublishedResponse!
+  registerUser(payload: UserRegisterInput!): UserRegisterResponse!
+  sharePost(postId: ID!, sharedUser: ID!): PostPublishedResponse!
+}
+
+type Post {
+  _id: ID!
+  createdAt: Timestamp
+  currentOwner: ID!
+  likes: Float!
+  ownerId: ID!
+  parentPost: ID
+  title: String!
+}
+
+"""Post Response"""
+type PostPublishedResponse {
+  data: Post!
+  message: String!
 }
 
 type Query {
   getUserById(id: String!): UserRegisterResponse!
-}
-
-type RegisterUser {
-  data: User!
-  message: String!
+  getUsersPostList(userId: String!): UserPostList!
 }
 
 """
@@ -31,6 +49,11 @@ type User {
   name: String
   password: String!
   userName: String!
+}
+
+"""List of User's Published Posts Response"""
+type UserPostList {
+  data: [Post!]!
 }
 
 input UserProfileUpdate {
