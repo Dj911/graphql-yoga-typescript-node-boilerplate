@@ -1,44 +1,47 @@
 // import { ArrayMaxSize, Length, Max, MaxLength, Min, IsDateString, IsStrongPassword } from "class-validator";
-import { ArgsType, Field, InputType, Int } from "type-graphql";
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts'
+import { ArgsType, Field, InputType, Int } from 'type-graphql'
 
 @ArgsType()
 export class UserLoginInput {
-    @Field()
-    userName: string
+	@Field()
+	userName: string
 
-    @Field()
-    password: string
+	@Field()
+	password: string
 }
 
 @InputType()
 export class UserRegisterInput {
-    @Field()
-    userName: string
+	@Field()
+	userName: string
 
-    @Field()
-    // @IsStrongPassword({minLength: 6, minUppercase: 1,minNumbers: 1, minSymbols: 1})
-    password: string
+	@Field()
+	password: string
+
+	@Field((type) => GraphQLUpload, { nullable: true })
+	profile?: FileUpload
 }
 
 @InputType()
 export class UserProfileUpdate {
-    @Field()
-    // @MaxLength(30)
-    name: string;
+	@Field()
+	// @MaxLength(30)
+	name: string
 
-    @Field()
-    // @Length(30, 255)
-    mobileNumber: number;
+	@Field()
+	// @Length(30, 255)
+	mobileNumber: number
 
-    @Field({nullable: true})
-    age?: number;
+	@Field({ nullable: true })
+	age?: number
 
-    @Field({nullable: true})
-    isActive: boolean;
+	@Field({ nullable: true })
+	isActive: boolean
 
-    @Field()
-    // @IsDateString()
-    lastLogin: Date;
+	@Field()
+	// @IsDateString()
+	lastLogin: Date
 }
 
 /* @ArgsType()

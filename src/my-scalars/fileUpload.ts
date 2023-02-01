@@ -1,7 +1,7 @@
 import { GraphQLScalarType, Kind } from 'graphql'
 import { ObjectId } from 'mongodb'
 
-export const FileScalar = new GraphQLScalarType({
+export const ObjectIdScalar = new GraphQLScalarType({
 	name: 'ObjectId',
 	description: 'Mongo object id scalar type',
 	serialize(value: unknown): string {

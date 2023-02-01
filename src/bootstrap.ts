@@ -7,6 +7,7 @@ import { UserModel } from '@user/model'
 import { ErrorInterceptor } from '@middlewares/ErrorInterceptor'
 import { PostModel } from '@post/model'
 // import { FileScalar } from './my-scalars/fileUpload'
+// import { GraphQLUpload, FileUpload } from 'graphql-upload-ts'
 
 async function bootstrap(app) {
 	Container.set([
@@ -22,7 +23,7 @@ async function bootstrap(app) {
 		validate: false,
 		dateScalarMode: 'timestamp',
 		//? Scalar File Types for uploading files in GraphQl
-		// scalarsMap: [{type: File,scalar: FileScalar}],
+		// scalarsMap: [{ type: Upload, scalar: GraphQLUpload }],
 		container: Container
 	})
 

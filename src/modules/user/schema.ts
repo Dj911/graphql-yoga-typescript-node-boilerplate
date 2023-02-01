@@ -1,3 +1,4 @@
+import { FileUpload, GraphQLUpload } from 'graphql-upload-ts'
 import { ObjectId } from 'mongoose'
 import { Field, ID, ObjectType } from 'type-graphql'
 
@@ -28,6 +29,6 @@ export class User {
 	lastLogin?: Date
 
 	//TODO: Use Custom Scalar File type
-	/* @Field(() => File)
-	profile: File */
+	@Field((type) => GraphQLUpload, { nullable: true })
+	profile?: FileUpload
 }

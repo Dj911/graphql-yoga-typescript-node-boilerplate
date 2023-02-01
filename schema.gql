@@ -40,6 +40,9 @@ The javascript `Date` as integer. Type represents date and time as number of mil
 """
 scalar Timestamp
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 type User {
   _id: ID!
   age: Float
@@ -48,6 +51,7 @@ type User {
   mobileNumber: Float
   name: String
   password: String!
+  profile: Upload
   userName: String!
 }
 
@@ -66,6 +70,7 @@ input UserProfileUpdate {
 
 input UserRegisterInput {
   password: String!
+  profile: Upload
   userName: String!
 }
 

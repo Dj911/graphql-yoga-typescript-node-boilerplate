@@ -19,8 +19,9 @@ export class UserService {
 		return responseMessages.WELCOME_MESSAGE
 	}
 
-	async getUserById(id: string) // : Promise<IUser | null>    // If you want to use return type
-	{
+	async getUserById(
+		id: string // : Promise<IUser | null>    // If you want to use return type
+	) {
 		const user = await this.UserModel.findById(id).lean()
 
 		if (!user) throw new GraphQLError('User not exists!')
